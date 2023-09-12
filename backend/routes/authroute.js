@@ -76,7 +76,7 @@ router.post('/login',async(req, res,) => {
         return res.status(401).send({ message: 'Authentication failed' });
     }
     const token = jwt.sign({email},process.env.JWT_SECRET_KEY);
-    return res.send({success:true,message:"Login successful",token})
+    return res.send({success:true,message:"Login successful",token,userEmail})
     } catch (error) {
         console.log(error);
         return res.status(500).send({success:false,message:"Error in login",error})
