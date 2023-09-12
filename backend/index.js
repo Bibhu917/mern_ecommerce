@@ -4,13 +4,13 @@ const authRoute = require('./routes/authroute')
 const categoryRoute = require('./routes/category')
 const productRouter = require('./routes/product')
 const dotenv = require('dotenv')
+const cors = require('cors')
 const app = express();
-
 
 dotenv.config();
 // middleware
 app.use(express.json())
-
+app.use(cors())
 //routes
 app.use('/api/auth',authRoute)
 app.use('/api/category',categoryRoute)
