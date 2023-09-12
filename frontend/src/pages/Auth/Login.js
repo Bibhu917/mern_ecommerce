@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 import Layout from '../../components/Layouts/Layout'
-import axios from 'axios'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+import  toast  from 'react-hot-toast';
+import { useAuth } from '../../context/auth';
 
 const Login = () => {
   const [userData,setUserData] = useState({email:"",password:""})
+  const [auth,setAuth] = useAuth()
+  const nav= useNavigate()
 
   const handleChange = (e) => {
     setUserData({...userData,[e.target.id]: e.target.value})
@@ -16,15 +21,26 @@ const Login = () => {
     }
     try {
       const res = await axios.post('http://localhost:8080/api/auth/login', data)
-      console.log(res)
+      if(res && res.data.success){
+        toast.success(res.data && res.data.message)
+        setAuth({...auth, 
+          user:res.data.user,
+          token:res.data.token
+        })
+        localStorage.setItem('user',JSON.stringify(res.data))
+        nav('/')
+      }else{
+        toast.error(res.data.message)
+      }
     } catch (error) {
       console.log(error)
+      toast.error('something went wrong')
     }
   }
   return (
     <Layout title={'Login - Ecommer App'}>
       <div className='register'>
-       <h1>login</h1>
+       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
