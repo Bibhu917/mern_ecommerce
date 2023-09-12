@@ -20,6 +20,16 @@ productRouter.post('/addProduct', async (req, res) => {
     }
 })
 
+productRouter.get('/listOfProducts',async(req,res)=>{
+    try {
+        const listOfProducts = await productModel.find().populate('category',"icon color");
+        return res.status(200).send({success:true,message:"Product list are",listOfProducts})   
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({success:false,message:"Server error occured",error})
+    }
+})
+
 productRouter.get('/singleProduct/:id', async (req, res) => {
     try {
         const { id } = req.params
