@@ -57,8 +57,8 @@ router.post('/register',async(req,res)=>{
 router.post('/login',async(req, res,) => {
     try {
     const {email , password } = req.body;
+    console.log("req body is",password)
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=.*[a-zA-Z]).{8,}$/;
     const userEmail = await userModel.findOne({email})
     if(!email || !password){
         return res.status(404).send({message:"Invalid email or password"})
@@ -69,14 +69,14 @@ router.post('/login',async(req, res,) => {
     if(!userEmail){
         return res.send({message:"Invalid Credentials"})
     }
-    if(!passwordRegex.test(password)){
-        return res.send({message:"Please enter a valid email"})
+    const isPasswordValid = await bcrypt.compare(password, userEmail.password);
+    console.log("existing",userEmail.password);
+    console.log(isPasswordValid)
+    if(!isPasswordValid){
+        return res.status(401).send({ message: 'Authentication failed' });
     }
-    const userPassword = await userModel.findOne({password})
-    if(!userPassword){
-        return res.send({message:"Invalid Credentials"})
-    } 
-    const token = jwt.sign()
+    const token = jwt.sign({email},process.env.JWT_SECRET_KEY);
+    return res.send({success:true,message:"Login successful",token})
     } catch (error) {
         console.log(error);
         return res.status(500).send({success:false,message:"Error in login",error})
