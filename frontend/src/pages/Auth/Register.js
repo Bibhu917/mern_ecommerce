@@ -24,15 +24,12 @@ const Register = () => {
     }
     try {
       const res = await axios.post('http://localhost:8080/api/auth/register',data)
-      console.log(res)
       if(res && res.data.success) {
         toast.success(res.data && res.data.message)
-        console.log(res)
         nav('/login')
       }else{
         toast.error(res.data.message)
       }
-      console.log(res)
     } catch (error) {
       console.log(error)
       toast.error("Something went wrong")

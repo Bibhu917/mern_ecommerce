@@ -24,11 +24,11 @@ const Login = () => {
       if(res && res.data.success){
         toast.success(res.data && res.data.message)
         setAuth({...auth, 
-          user:res.data.user,
+          user:res.data.userEmail,
           token:res.data.token
         })
         localStorage.setItem('user',JSON.stringify(res.data))
-        nav('/')
+        nav('/dashboard')
       }else{
         toast.error(res.data.message)
       }

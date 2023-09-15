@@ -6,12 +6,9 @@ const categoryRouter = express.Router();
 //add category
 categoryRouter.post('/addCategory', async (req, res) => {
     try {
-        const { name, icon, color } = req.body
-        const category = new categoryModel({ name, icon, color })
+        const { name, image } = req.body
+        const category = new categoryModel({ name, image })
         await category.save();
-        if (!category) {
-            return res.status(404).send({ message: "Category not found" })
-        }
         return res.status(201).send({ success: true, message: "Category Created successfully", category });
     } catch (error) {
         console.log(error);
@@ -23,7 +20,6 @@ categoryRouter.post('/addCategory', async (req, res) => {
 // category list
 categoryRouter.get('/listOfCategory', async (req, res) => {
     try {
-        const { id } = req.params;
         const categoryList = await categoryModel.find();
         return res.status(200).send({ success: true, message: "Category lists", categoryList });
     } catch (error) {

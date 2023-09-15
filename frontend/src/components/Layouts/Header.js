@@ -1,7 +1,13 @@
 import React from 'react'
 import { NavLink,Link } from 'react-router-dom'
+import { useAuth } from '../../context/auth'
 
 const Header = () => {
+  const [auth,setAuth] = useAuth()
+  const handleLogout = () => {
+    setAuth({...auth,user:null, token:""})
+    localStorage.removeItem("auth")
+  }
   return (
     <>
   <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -15,15 +21,25 @@ const Header = () => {
         <li className="nav-item">
           <NavLink to='/' className="nav-link" href="#">Home</NavLink>
         </li>
-        <li className="nav-item">
-          <NavLink to='/category' className="nav-link" href="#">Category</NavLink>
-        </li>
+        {
+          !auth.user ? (
+            <>
         <li className="nav-item">
           <NavLink to='/register' className="nav-link" href="#">Signup</NavLink>
         </li>
         <li className="nav-item">
           <NavLink to='/login' className="nav-link" href="#">Login</NavLink>
         </li>
+            </>
+          ) : (<>
+          <li className="nav-item">
+          <NavLink to='/dashboard' className="nav-link" href="#">Dashboard</NavLink>
+          </li>
+          <li className="nav-item">
+          <NavLink to='/login' onClick={handleLogout} className="nav-link">Logout</NavLink>
+          </li>
+          </>)
+        }
         <li className="nav-item">
           <NavLink to='/cart' className="nav-link" href="#">Cart(0)</NavLink>
         </li>

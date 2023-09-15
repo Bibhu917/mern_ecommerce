@@ -57,7 +57,6 @@ router.post('/register',async(req,res)=>{
 router.post('/login',async(req, res,) => {
     try {
     const {email , password } = req.body;
-    console.log("req body is",password)
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userEmail = await userModel.findOne({email})
     if(!email || !password){
@@ -70,8 +69,6 @@ router.post('/login',async(req, res,) => {
         return res.send({message:"Invalid Credentials"})
     }
     const isPasswordValid = await bcrypt.compare(password, userEmail.password);
-    console.log("existing",userEmail.password);
-    console.log(isPasswordValid)
     if(!isPasswordValid){
         return res.status(401).send({ message: 'Authentication failed' });
     }

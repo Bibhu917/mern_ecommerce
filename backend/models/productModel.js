@@ -8,20 +8,13 @@ const productSchmea = new mongoose.Schema({
         type:String,
         required:true,
     },
-    richDescription:{
-        type:String,
-        default:'' 
-    },
     image:{
         type:String,
-        default:''
+        required:true,
     },
-    images:[{
-        type:String
-    }],
     brand:{
         type:String,
-        default:""
+        required:true,
     },
     price:{
         type:Number,
