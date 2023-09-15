@@ -17,7 +17,7 @@ app.use('/api/category',categoryRoute)
 app.use('/api/product',productRouter)
 
 app.use('/',async(req,res)=>{
-    return res.send({message:"Hello World from Index"})
+    return res.send({message:"Hello World from Indexf"})
 })
 
 app.listen(process.env.PORT,async()=>{
