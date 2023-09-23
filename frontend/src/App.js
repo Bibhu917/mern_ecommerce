@@ -9,6 +9,7 @@ import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './pages/user/Dashboard';
+import ProductList from './pages/user/ProductList';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path='/about' element={<About/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/policy' element={<Policy/>}/>
+        <Route path='/productlist' element={<ProductList/>}/>
         <Route path='*' element={<PagenotFound/>}/>
       </Routes>
     </>

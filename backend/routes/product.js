@@ -41,16 +41,16 @@ productRouter.get('/singleProduct/:id', async (req, res) => {
     }
 })
 
-// productRouter.get('/productsByCategory/:id', async (req, res) => {
-//     try {
-//         const {id} = req.params;
-//         const products = await productModel.findById(id);
-//         console.log("catgryProduct",products)
-//         return res.status(200).send({ success: true,message:"products", products });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send({ message: "Error occurred while fetching products", error });
-//     }
-// });
+productRouter.get('/productsByCategory/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const products = await productModel.findById(id);
+        console.log("catgryProduct",products)
+        return res.status(200).send({ success: true,message:"products", products });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ message: "Error occurred while fetching products", error });
+    }
+});
 
 module.exports = productRouter
