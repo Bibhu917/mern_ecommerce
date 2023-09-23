@@ -22,8 +22,23 @@ productRouter.post('/addProduct', async (req, res) => {
 
 productRouter.get('/listOfProducts',async(req,res)=>{
     try {
-        const listOfProducts = await productModel.find().populate('category',"icon color");
+        const listOfProducts = await productModel.find().populate('category',"name image");
         return res.status(200).send({success:true,message:"Product list are",listOfProducts})   
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({success:false,message:"Server error occured",error})
+    }
+})
+
+productRouter.get('/listOfcategoryProduct',async(req,res)=>{
+    // this one added
+    try {
+        let filter = {};
+        if(req.query.categories){
+            filter={category:req.query.categories.split(',')}
+        }
+        const listOfcategoryProducts = await productModel.find(filter).populate('category');
+        return res.status(200).send({success:true,message:"Product list are",listOfcategoryProducts})   
     } catch (error) {
         console.log(error);
         return res.status(500).send({success:false,message:"Server error occured",error})
@@ -32,7 +47,7 @@ productRouter.get('/listOfProducts',async(req,res)=>{
 
 productRouter.get('/singleProduct/:id', async (req, res) => {
     try {
-        const { id } = req.params
+        const { id } = req.params;
         const singleProduct = await productModel.findById(id).populate('category');
         return res.status(200).send({ success: true, messgae: "Single Product is", singleProduct })
     } catch (error) {
@@ -41,16 +56,26 @@ productRouter.get('/singleProduct/:id', async (req, res) => {
     }
 })
 
-productRouter.get('/productsByCategory/:id', async (req, res) => {
+productRouter.put('/updateProduct/:id',async(req,res)=>{
     try {
         const {id} = req.params;
-        const products = await productModel.findById(id);
-        console.log("catgryProduct",products)
-        return res.status(200).send({ success: true,message:"products", products });
+        const updateProduct = req.body 
+        const updateItem = await productModel.findByIdAndUpdate(id,updateProduct,{new:true})
+        return res.status(200).send({success:true,message:"Product updated successfully",updateItem})
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ message: "Error occurred while fetching products", error });
+        return res.status(500).send({success:false,message:"Error occured in updating single product",error })
     }
-});
+})
+
+productRouter.get('/featuredProduct',async(req,res)=>{
+    try {
+        const featuredProduct = await productModel.find({isFeatured:true})
+        return res.status(200).send({success:true,message:"Featured list are",featuredProduct})
+    } catch (error) {
+        console.log(error);
+        return res.sta(500).send({success:false,messgae:"Error occured in featured list",error})
+    }
+})
 
 module.exports = productRouter
